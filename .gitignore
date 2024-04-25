@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/FiresWinForms/graphPython/build/graphCmd
+/FiresWinForms/graphPython/dist/graphCmd
+/FiresWinForms/graphCmd
