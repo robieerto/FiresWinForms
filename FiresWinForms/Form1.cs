@@ -211,12 +211,25 @@ namespace FiresWinForms
                         {
                         }
                     }
-                    XlsSaver.SaveData(Data, measurementNum);
-                    RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, true);
-                    Invoke(new MethodInvoker(delegate ()
+                    try
                     {
-                        showGraph_Loaded();
-                    }));
+                        XlsSaver.SaveData(Data, measurementNum);
+                        RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, true);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Text = ex.Message;
+                    }
+                    try
+                    {
+                        Invoke(new MethodInvoker(delegate ()
+                        {
+                            showGraph_Loaded();
+                        }));
+                    }
+                    catch (Exception)
+                    {
+                    }
                 });
             }
             catch (Exception ex)
@@ -264,12 +277,12 @@ namespace FiresWinForms
 
         private void disableButtons()
         {
-            connectBtn.Enabled = false;
-            repeatBtn.Enabled = false;
-            zeroBtn.Enabled = false;
             conditionFdmax.BackColor = Color.White;
             conditionFmin.BackColor = Color.White;
             conditionFs.BackColor = Color.White;
+            connectBtn.Enabled = false;
+            repeatBtn.Enabled = false;
+            zeroBtn.Enabled = false;
         }
 
         private void enableButtons()
@@ -299,11 +312,11 @@ namespace FiresWinForms
             changingSettings = !changingSettings;
             if (changingSettings)
             {
-                changeSettings.Text = "Potvrdiť";
+                changeSettings.Text = "Uložiť";
             }
             else
             {
-                changeSettings.Text = "Zmeniť";
+                changeSettings.Text = "Upraviť";
                 AsssignSettings();
             }
             silaFmin.Enabled = changingSettings;
