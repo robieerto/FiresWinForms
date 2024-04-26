@@ -69,10 +69,14 @@
             conditionFmin = new TextBox();
             conditionFs = new TextBox();
             zeroBtn = new Button();
+            groupBox3 = new GroupBox();
+            groupBox4 = new GroupBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             Nastavenie.SuspendLayout();
+            groupBox3.SuspendLayout();
+            groupBox4.SuspendLayout();
             SuspendLayout();
             // 
             // logger
@@ -88,11 +92,11 @@
             // 
             // actualData
             // 
-            actualData.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            actualData.Location = new Point(12, 137);
+            actualData.Font = new Font("Segoe UI Semibold", 30F, FontStyle.Bold);
+            actualData.Location = new Point(465, 137);
             actualData.Name = "actualData";
             actualData.ReadOnly = true;
-            actualData.Size = new Size(206, 43);
+            actualData.Size = new Size(260, 61);
             actualData.TabIndex = 4;
             actualData.TextAlign = HorizontalAlignment.Center;
             // 
@@ -100,7 +104,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label3.Location = new Point(13, 104);
+            label3.Location = new Point(495, 104);
             label3.Name = "label3";
             label3.Size = new Size(184, 30);
             label3.TabIndex = 5;
@@ -176,7 +180,7 @@
             // listView1
             // 
             listView1.Columns.AddRange(new ColumnHeader[] { counter, time, value });
-            listView1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            listView1.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             listView1.GridLines = true;
             listView1.Location = new Point(749, 137);
             listView1.Name = "listView1";
@@ -219,10 +223,10 @@
             // 
             label5.Anchor = AnchorStyles.Bottom;
             label5.AutoSize = true;
-            label5.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(523, 636);
+            label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(295, 636);
             label5.Name = "label5";
-            label5.Size = new Size(152, 25);
+            label5.Size = new Size(125, 21);
             label5.TabIndex = 14;
             label5.Text = "Saturel, s.r.o. (C) ";
             // 
@@ -244,7 +248,7 @@
             showGraphBtn.FlatStyle = FlatStyle.Flat;
             showGraphBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
             showGraphBtn.ForeColor = SystemColors.ControlText;
-            showGraphBtn.Location = new Point(848, 597);
+            showGraphBtn.Location = new Point(846, 587);
             showGraphBtn.Name = "showGraphBtn";
             showGraphBtn.Size = new Size(233, 41);
             showGraphBtn.TabIndex = 16;
@@ -260,18 +264,18 @@
             startBtn.FlatStyle = FlatStyle.Flat;
             startBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
             startBtn.ForeColor = SystemColors.ControlText;
-            startBtn.Location = new Point(469, 137);
+            startBtn.Location = new Point(8, 33);
             startBtn.Name = "startBtn";
-            startBtn.Size = new Size(260, 57);
+            startBtn.Size = new Size(198, 52);
             startBtn.TabIndex = 22;
-            startBtn.Text = "SPUSTIŤ MERANIE";
+            startBtn.Text = "SPUSTIŤ";
             startBtn.UseVisualStyleBackColor = false;
             startBtn.Click += startMeasuring_Click;
             // 
             // maxValue
             // 
             maxValue.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            maxValue.Location = new Point(504, 405);
+            maxValue.Location = new Point(495, 395);
             maxValue.Name = "maxValue";
             maxValue.ReadOnly = true;
             maxValue.Size = new Size(200, 43);
@@ -286,18 +290,18 @@
             repeatBtn.FlatStyle = FlatStyle.Flat;
             repeatBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
             repeatBtn.ForeColor = SystemColors.ControlText;
-            repeatBtn.Location = new Point(469, 215);
+            repeatBtn.Location = new Point(220, 33);
             repeatBtn.Name = "repeatBtn";
-            repeatBtn.Size = new Size(260, 57);
+            repeatBtn.Size = new Size(199, 52);
             repeatBtn.TabIndex = 25;
-            repeatBtn.Text = "OPAKOVAŤ MERANIE";
+            repeatBtn.Text = "OPAKOVAŤ";
             repeatBtn.UseVisualStyleBackColor = false;
             repeatBtn.Click += repeatMeasuring_Click;
             // 
             // numberMeasure
             // 
             numberMeasure.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            numberMeasure.Location = new Point(504, 317);
+            numberMeasure.Location = new Point(493, 313);
             numberMeasure.Name = "numberMeasure";
             numberMeasure.ReadOnly = true;
             numberMeasure.Size = new Size(200, 43);
@@ -308,7 +312,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label7.Location = new Point(532, 372);
+            label7.Location = new Point(521, 362);
             label7.Name = "label7";
             label7.Size = new Size(137, 30);
             label7.TabIndex = 27;
@@ -318,7 +322,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label6.Location = new Point(524, 285);
+            label6.Location = new Point(513, 281);
             label6.Name = "label6";
             label6.Size = new Size(150, 30);
             label6.TabIndex = 24;
@@ -340,7 +344,7 @@
             Nastavenie.Font = new Font("Segoe UI", 12F);
             Nastavenie.Location = new Point(12, 204);
             Nastavenie.Name = "Nastavenie";
-            Nastavenie.Size = new Size(440, 299);
+            Nastavenie.Size = new Size(431, 299);
             Nastavenie.TabIndex = 28;
             Nastavenie.TabStop = false;
             Nastavenie.Text = "Nastavenia";
@@ -466,7 +470,7 @@
             conditionFdmax.BackColor = Color.White;
             conditionFdmax.BorderStyle = BorderStyle.None;
             conditionFdmax.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            conditionFdmax.Location = new Point(469, 467);
+            conditionFdmax.Location = new Point(11, 28);
             conditionFdmax.Name = "conditionFdmax";
             conditionFdmax.ReadOnly = true;
             conditionFdmax.Size = new Size(260, 36);
@@ -479,7 +483,7 @@
             conditionFmin.BackColor = Color.White;
             conditionFmin.BorderStyle = BorderStyle.None;
             conditionFmin.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            conditionFmin.Location = new Point(469, 575);
+            conditionFmin.Location = new Point(11, 139);
             conditionFmin.Name = "conditionFmin";
             conditionFmin.ReadOnly = true;
             conditionFmin.Size = new Size(260, 36);
@@ -492,7 +496,7 @@
             conditionFs.BackColor = Color.White;
             conditionFs.BorderStyle = BorderStyle.None;
             conditionFs.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            conditionFs.Location = new Point(469, 521);
+            conditionFs.Location = new Point(11, 85);
             conditionFs.Name = "conditionFs";
             conditionFs.ReadOnly = true;
             conditionFs.Size = new Size(260, 36);
@@ -508,13 +512,38 @@
             zeroBtn.FlatStyle = FlatStyle.Flat;
             zeroBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
             zeroBtn.ForeColor = SystemColors.ControlText;
-            zeroBtn.Location = new Point(232, 137);
+            zeroBtn.Location = new Point(495, 216);
             zeroBtn.Name = "zeroBtn";
-            zeroBtn.Size = new Size(220, 57);
+            zeroBtn.Size = new Size(199, 52);
             zeroBtn.TabIndex = 32;
             zeroBtn.Text = "NULOVAŤ SILU";
             zeroBtn.UseVisualStyleBackColor = false;
             zeroBtn.Click += zeroBtn_Click;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(startBtn);
+            groupBox3.Controls.Add(repeatBtn);
+            groupBox3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            groupBox3.Location = new Point(12, 104);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(431, 98);
+            groupBox3.TabIndex = 33;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Meranie";
+            // 
+            // groupBox4
+            // 
+            groupBox4.Controls.Add(conditionFdmax);
+            groupBox4.Controls.Add(conditionFs);
+            groupBox4.Controls.Add(conditionFmin);
+            groupBox4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            groupBox4.Location = new Point(454, 444);
+            groupBox4.Name = "groupBox4";
+            groupBox4.Size = new Size(285, 184);
+            groupBox4.TabIndex = 34;
+            groupBox4.TabStop = false;
+            groupBox4.Text = "Podmienky";
             // 
             // Form1
             // 
@@ -522,14 +551,12 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkSeaGreen;
             ClientSize = new Size(1184, 661);
+            Controls.Add(label5);
+            Controls.Add(groupBox4);
+            Controls.Add(groupBox3);
             Controls.Add(zeroBtn);
-            Controls.Add(conditionFs);
-            Controls.Add(conditionFmin);
-            Controls.Add(conditionFdmax);
             Controls.Add(Nastavenie);
-            Controls.Add(startBtn);
             Controls.Add(maxValue);
-            Controls.Add(repeatBtn);
             Controls.Add(numberMeasure);
             Controls.Add(label7);
             Controls.Add(label6);
@@ -537,7 +564,6 @@
             Controls.Add(label3);
             Controls.Add(showGraphBtn);
             Controls.Add(pictureBox1);
-            Controls.Add(label5);
             Controls.Add(label2);
             Controls.Add(listView1);
             Controls.Add(groupBox2);
@@ -554,6 +580,9 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             Nastavenie.ResumeLayout(false);
             Nastavenie.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox4.ResumeLayout(false);
+            groupBox4.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -599,5 +628,7 @@
         private TextBox silaFmin;
         private Label label12;
         private Button zeroBtn;
+        private GroupBox groupBox3;
+        private GroupBox groupBox4;
     }
 }

@@ -142,7 +142,7 @@ namespace FiresWinForms
             counterEnd = 0;
             Data = [];
             logger.Text = "Čaká na F > Fmin";
-            startBtn.Text = "PRERUŠIŤ MERANIE";
+            startBtn.Text = "PRERUŠIŤ";
             isWaiting = true;
             disableButtons();
             showGraph_Loading();
@@ -163,7 +163,7 @@ namespace FiresWinForms
             isMeasuring = false;
             timer1.Stop();
             logger.Text = "Meranie ukončené";
-            startBtn.Text = "SPUSTIŤ MERANIE";
+            startBtn.Text = "SPUSTIŤ";
             enableButtons();
         }
 
