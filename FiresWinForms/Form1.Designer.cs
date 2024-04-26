@@ -65,9 +65,9 @@
             label8 = new Label();
             silaFd = new TextBox();
             label10 = new Label();
-            Condition25 = new TextBox();
-            ConditionFdMax = new TextBox();
-            ConditionFs = new TextBox();
+            conditionFdmax = new TextBox();
+            conditionFmin = new TextBox();
+            conditionFs = new TextBox();
             zeroBtn = new Button();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -100,7 +100,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(161, 101);
+            label3.Location = new Point(156, 101);
             label3.Name = "label3";
             label3.Size = new Size(138, 21);
             label3.TabIndex = 5;
@@ -304,7 +304,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.Location = new Point(443, 290);
+            label7.Location = new Point(451, 290);
             label7.Name = "label7";
             label7.Size = new Size(102, 21);
             label7.TabIndex = 27;
@@ -314,7 +314,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.Location = new Point(304, 290);
+            label6.Location = new Point(305, 290);
             label6.Name = "label6";
             label6.Size = new Size(112, 21);
             label6.TabIndex = 24;
@@ -355,7 +355,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label12.Location = new Point(30, 14);
+            label12.Location = new Point(14, 14);
             label12.Name = "label12";
             label12.Size = new Size(109, 21);
             label12.TabIndex = 34;
@@ -397,7 +397,7 @@
             // 
             label9.AutoSize = true;
             label9.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label9.Location = new Point(182, 71);
+            label9.Location = new Point(167, 73);
             label9.Name = "label9";
             label9.Size = new Size(78, 21);
             label9.TabIndex = 30;
@@ -407,7 +407,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label11.Location = new Point(41, 127);
+            label11.Location = new Point(23, 127);
             label11.Name = "label11";
             label11.Size = new Size(86, 21);
             label11.TabIndex = 32;
@@ -428,7 +428,7 @@
             // 
             label8.AutoSize = true;
             label8.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label8.Location = new Point(181, 14);
+            label8.Location = new Point(167, 14);
             label8.Name = "label8";
             label8.Size = new Size(81, 21);
             label8.TabIndex = 30;
@@ -449,44 +449,50 @@
             // 
             label10.AutoSize = true;
             label10.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label10.Location = new Point(39, 70);
+            label10.Location = new Point(23, 70);
             label10.Name = "label10";
             label10.Size = new Size(89, 21);
             label10.TabIndex = 30;
             label10.Text = "Sila Fd (N)";
             // 
-            // Condition25
+            // conditionFdmax
             // 
-            Condition25.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            Condition25.Location = new Point(305, 363);
-            Condition25.Name = "Condition25";
-            Condition25.ReadOnly = true;
-            Condition25.Size = new Size(260, 32);
-            Condition25.TabIndex = 29;
-            Condition25.Text = "F < 25 N po dobe Tt";
-            Condition25.TextAlign = HorizontalAlignment.Center;
+            conditionFdmax.BackColor = Color.White;
+            conditionFdmax.BorderStyle = BorderStyle.None;
+            conditionFdmax.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            conditionFdmax.Location = new Point(305, 363);
+            conditionFdmax.Name = "conditionFdmax";
+            conditionFdmax.ReadOnly = true;
+            conditionFdmax.Size = new Size(260, 25);
+            conditionFdmax.TabIndex = 29;
+            conditionFdmax.Text = "F < Fd Max limit";
+            conditionFdmax.TextAlign = HorizontalAlignment.Center;
             // 
-            // ConditionFdMax
+            // conditionFmin
             // 
-            ConditionFdMax.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            ConditionFdMax.Location = new Point(305, 463);
-            ConditionFdMax.Name = "ConditionFdMax";
-            ConditionFdMax.ReadOnly = true;
-            ConditionFdMax.Size = new Size(260, 32);
-            ConditionFdMax.TabIndex = 30;
-            ConditionFdMax.Text = "F < Fd Max limit";
-            ConditionFdMax.TextAlign = HorizontalAlignment.Center;
+            conditionFmin.BackColor = Color.White;
+            conditionFmin.BorderStyle = BorderStyle.None;
+            conditionFmin.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            conditionFmin.Location = new Point(305, 443);
+            conditionFmin.Name = "conditionFmin";
+            conditionFmin.ReadOnly = true;
+            conditionFmin.Size = new Size(260, 25);
+            conditionFmin.TabIndex = 30;
+            conditionFmin.Text = "F < 25 N po dobe Tt";
+            conditionFmin.TextAlign = HorizontalAlignment.Center;
             // 
-            // ConditionFs
+            // conditionFs
             // 
-            ConditionFs.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
-            ConditionFs.Location = new Point(305, 413);
-            ConditionFs.Name = "ConditionFs";
-            ConditionFs.ReadOnly = true;
-            ConditionFs.Size = new Size(260, 32);
-            ConditionFs.TabIndex = 31;
-            ConditionFs.Text = "F < Fs po dobe Td";
-            ConditionFs.TextAlign = HorizontalAlignment.Center;
+            conditionFs.BackColor = Color.White;
+            conditionFs.BorderStyle = BorderStyle.None;
+            conditionFs.Font = new Font("Segoe UI Semibold", 13.8F, FontStyle.Bold);
+            conditionFs.Location = new Point(305, 403);
+            conditionFs.Name = "conditionFs";
+            conditionFs.ReadOnly = true;
+            conditionFs.Size = new Size(260, 25);
+            conditionFs.TabIndex = 31;
+            conditionFs.Text = "F < Fs po dobe Td";
+            conditionFs.TextAlign = HorizontalAlignment.Center;
             // 
             // zeroBtn
             // 
@@ -511,9 +517,9 @@
             BackColor = Color.DarkSeaGreen;
             ClientSize = new Size(984, 531);
             Controls.Add(zeroBtn);
-            Controls.Add(ConditionFs);
-            Controls.Add(ConditionFdMax);
-            Controls.Add(Condition25);
+            Controls.Add(conditionFs);
+            Controls.Add(conditionFmin);
+            Controls.Add(conditionFdmax);
             Controls.Add(Nastavenie);
             Controls.Add(startBtn);
             Controls.Add(maxValue);
@@ -580,9 +586,9 @@
         private TextBox silaFs;
         private Label label11;
         private TextBox casTd;
-        private TextBox Condition25;
-        private TextBox ConditionFdMax;
-        private TextBox ConditionFs;
+        private TextBox conditionFdmax;
+        private TextBox conditionFmin;
+        private TextBox conditionFs;
         private Button changeSettings;
         private TextBox silaFmin;
         private Label label12;

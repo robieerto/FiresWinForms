@@ -8,7 +8,7 @@ namespace FiresWinForms
         private SerialControl? _serialControl;
         private List<DataModel> Data { get; set; } = [];
         private DateTime timerEnd;
-        private int measurementNum;
+        private int measurementNum, counterEnd;
         private bool isWaiting;
         private bool isMeasuring;
         private bool changingSettings;
@@ -42,9 +42,19 @@ namespace FiresWinForms
                 }
                 if (isMeasuring)
                 {
+                    if (value < Fmin)
+                    {
+                        counterEnd++;
+                    }
+                    if (counterEnd > 10)
+                    {
+                        StopMeasuring();
+                        ProcessData();
+                    }
+
                     Data.Add(new DataModel
                     {
-                        Time = GetRemainingTime(),
+                        Time = GetElapsedTime(),
                         Value = value
                     });
                 }
@@ -55,9 +65,9 @@ namespace FiresWinForms
             }
         }
 
-        private double GetRemainingTime()
+        private decimal GetElapsedTime()
         {
-            return (timer1.Interval - (int)(timerEnd - DateTime.Now).TotalMilliseconds) / 1000.0;
+            return (timer1.Interval - (int)(timerEnd - DateTime.Now).TotalMilliseconds) / 1000.0m;
         }
 
         private void AsssignSettings()
@@ -129,6 +139,7 @@ namespace FiresWinForms
         {
             savedValue = rawValue;
             listView1.Items.Clear();
+            counterEnd = 0;
             Data = [];
             logger.Text = "Čaká na F > Fmin";
             startBtn.Text = "PRERUŠIŤ MERANIE";
@@ -156,6 +167,64 @@ namespace FiresWinForms
             enableButtons();
         }
 
+        private void ProcessData()
+        {
+            if (Data.Count == 0)
+            {
+                return;
+            }
+
+            // Show data in list view
+            var i = 0;
+            foreach (var item in Data)
+            {
+                string[] row = { (++i).ToString(), string.Format("{0:N3}", item.Time), item.Value.ToString() ?? "" };
+                listView1.Items.Add(new ListViewItem(row));
+            }
+
+            // Find max value
+            var max = Data.Max(x => x.Value);
+            maxValue.Text = max.ToString();
+            conditionFdmax.BackColor = max > Fd ? Color.Red : Color.Green;
+
+            // Find last value
+            var last = Data.Last().Value;
+            conditionFmin.BackColor = last > Fmin ? Color.Red : Color.Green;
+
+            // Find last value after Td
+            var lastAfterTd = Data.Where(x => x.Time >= Td).FirstOrDefault()?.Value;
+            conditionFs.BackColor = lastAfterTd > Fs ? Color.Red : Color.Green;
+
+            // Save data to file and show graphy
+            try
+            {
+                Task.Run(() =>
+                {
+                    if (XlsSaver.fileCreated == false)
+                    {
+                        try
+                        {
+                            var dir = new DirectoryInfo("Data\\Grafy");
+                            dir.Delete(true);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    XlsSaver.SaveData(Data, measurementNum);
+                    RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, true);
+                    Invoke(new MethodInvoker(delegate ()
+                    {
+                        showGraph_Loaded();
+                    }));
+                });
+            }
+            catch (Exception ex)
+            {
+                logger.Text = ex.Message;
+            }
+        }
+
         private void startMeasuring_Click(object sender, EventArgs e)
         {
             if (isWaiting || isMeasuring)
@@ -178,43 +247,7 @@ namespace FiresWinForms
         private void timer1_Tick(object sender, EventArgs e)
         {
             StopMeasuring();
-            if (Data?.Count > 0)
-            {
-                var counter = 0;
-                foreach (var item in Data)
-                {
-                    string[] row = { (++counter).ToString(), string.Format("{0:N3}", item.Time), item.Value.ToString() ?? "" };
-                    listView1.Items.Add(new ListViewItem(row));
-                }
-                maxValue.Text = Data.Max(x => x.Value).ToString();
-                try
-                {
-                    Task.Run(() =>
-                    {
-                        if (XlsSaver.fileCreated == false)
-                        {
-                            try
-                            {
-                                var dir = new DirectoryInfo("Data\\Grafy");
-                                dir.Delete(true);
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        }
-                        XlsSaver.SaveData(Data, measurementNum);
-                        RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, true);
-                        Invoke(new MethodInvoker(delegate ()
-                        {
-                            showGraph_Loaded();
-                        }));
-                    });
-                }
-                catch (Exception ex)
-                {
-                    logger.Text = ex.Message;
-                }
-            }
+            ProcessData();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -234,6 +267,9 @@ namespace FiresWinForms
             connectBtn.Enabled = false;
             repeatBtn.Enabled = false;
             zeroBtn.Enabled = false;
+            conditionFdmax.BackColor = Color.White;
+            conditionFmin.BackColor = Color.White;
+            conditionFs.BackColor = Color.White;
         }
 
         private void enableButtons()
@@ -264,12 +300,13 @@ namespace FiresWinForms
             if (changingSettings)
             {
                 changeSettings.Text = "Potvrdiť";
-                AsssignSettings();
             }
             else
             {
                 changeSettings.Text = "Zmeniť";
+                AsssignSettings();
             }
+            silaFmin.Enabled = changingSettings;
             silaFd.Enabled = changingSettings;
             silaFs.Enabled = changingSettings;
             casTd.Enabled = changingSettings;
