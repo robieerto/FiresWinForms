@@ -8,17 +8,16 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
-    <ApplicationIcon>force.ico</ApplicationIcon>
-    <AssemblyName>FireMeranie</AssemblyName>
+    <ApplicationIcon>images\force.ico</ApplicationIcon>
+    <AssemblyName>FiresMeranie</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="force.ico" />
+    <Content Include="images\force.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.2" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.IO.Ports" Version="8.0.0" />
   </ItemGroup>
 

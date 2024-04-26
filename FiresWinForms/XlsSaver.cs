@@ -21,7 +21,7 @@ namespace FiresWinForms
 
             for (int i = 0; i < data.Count; i++)
             {
-                worksheet.Cell(i + 2, 1).Value = string.Format("{0:N3}", data[i].Time);
+                worksheet.Cell(i + 2, 1).Value = data[i].Time;
                 worksheet.Cell(i + 2, 2).Value = data[i].Value;
             }
 
