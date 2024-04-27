@@ -42,7 +42,7 @@ bottom = max(data[timeHeader])*0.99
 # plt.plot(x_, y_)
 
 # Plot
-plt.plot(x, y)
+plt.plot(x, y, linewidth=4)
 plt.xlabel(timeHeader)
 plt.ylabel(valueHeader)
 # formatter = FuncFormatter(form1)

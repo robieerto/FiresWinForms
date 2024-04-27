@@ -24,15 +24,13 @@ namespace FiresWinForms
         public Form1()
         {
             InitializeComponent();
+            AsssignSettings();
             logger.Text = "Vyberte COM port a pripojte sa";
             comboBoxPort.Items.AddRange(ports);
             if (ports.Length > 0)
             {
                 comboBoxPort.SelectedItem = ports[0];
             }
-            loadingImg = showGraphBtn.Image;
-            showGraphBtn.Image = null;
-            AsssignSettings();
         }
 
         public void AddDataValue(string rawValueStr)
@@ -175,7 +173,9 @@ namespace FiresWinForms
             startBtn.Text = "PRERUŠIŤ";
             isWaiting = true;
             disableButtons();
-            showGraph_Loading();
+            graphPicture.Image = null;
+            graphPicture.Enabled = false;
+            graphPicture.UseWaitCursor = true;
             numberMeasure.Text = measurementNum.ToString();
         }
 
@@ -230,6 +230,7 @@ namespace FiresWinForms
             {
                 Task.Run(() =>
                 {
+                    int measurementNum = this.measurementNum;
                     if (XlsSaver.fileCreated == false)
                     {
                         try
@@ -254,7 +255,9 @@ namespace FiresWinForms
                     {
                         Invoke(new MethodInvoker(delegate ()
                         {
-                            showGraph_Loaded();
+                            graphPicture.Image = Image.FromFile("Data\\Grafy\\" + measurementNum + ".png");
+                            graphPicture.Enabled = true;
+                            graphPicture.UseWaitCursor = false;
                         }));
                     }
                     catch (Exception)
@@ -297,14 +300,6 @@ namespace FiresWinForms
         {
         }
 
-        private void showGraph_Click(object sender, EventArgs e)
-        {
-            Task.Run(() =>
-            {
-                RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues());
-            });
-        }
-
         private void disableButtons()
         {
             conditionFdmax.BackColor = Color.White;
@@ -320,21 +315,6 @@ namespace FiresWinForms
             connectBtn.Enabled = true;
             repeatBtn.Enabled = true;
             zeroBtn.Enabled = true;
-            showGraph_Loaded();
-        }
-
-        private void showGraph_Loading()
-        {
-            showGraphBtn.Enabled = false;
-            showGraphBtn.Text = "";
-            showGraphBtn.Image = loadingImg;
-        }
-
-        private void showGraph_Loaded()
-        {
-            showGraphBtn.Enabled = true;
-            showGraphBtn.Text = "ZOBRAZIŤ GRAF";
-            showGraphBtn.Image = null;
         }
 
         private void changeSettings_Click(object sender, EventArgs e)
@@ -359,6 +339,14 @@ namespace FiresWinForms
         private void zeroBtn_Click(object sender, EventArgs e)
         {
             savedValue = rawValue;
+        }
+
+        private void graphPicture_Click(object sender, EventArgs e)
+        {
+            Task.Run(() =>
+            {
+                RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues());
+            });
         }
     }
 }

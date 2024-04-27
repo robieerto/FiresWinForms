@@ -46,7 +46,6 @@
             timer1 = new System.Windows.Forms.Timer(components);
             label5 = new Label();
             pictureBox1 = new PictureBox();
-            showGraphBtn = new Button();
             startBtn = new Button();
             maxValue = new TextBox();
             repeatBtn = new Button();
@@ -65,19 +64,21 @@
             label8 = new Label();
             silaFd = new TextBox();
             label10 = new Label();
+            showLimitsCheckbox = new CheckBox();
             conditionFdmax = new TextBox();
             conditionFmin = new TextBox();
             conditionFs = new TextBox();
             zeroBtn = new Button();
             groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
-            showLimitsCheckbox = new CheckBox();
+            graphPicture = new PictureBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             Nastavenie.SuspendLayout();
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)graphPicture).BeginInit();
             SuspendLayout();
             // 
             // logger
@@ -87,14 +88,14 @@
             logger.Location = new Point(6, 30);
             logger.Name = "logger";
             logger.ReadOnly = true;
-            logger.Size = new Size(814, 47);
+            logger.Size = new Size(894, 47);
             logger.TabIndex = 0;
             logger.TextAlign = HorizontalAlignment.Center;
             // 
             // actualData
             // 
             actualData.Font = new Font("Segoe UI Semibold", 30F, FontStyle.Bold);
-            actualData.Location = new Point(465, 137);
+            actualData.Location = new Point(505, 137);
             actualData.Name = "actualData";
             actualData.ReadOnly = true;
             actualData.Size = new Size(260, 61);
@@ -105,7 +106,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label3.Location = new Point(495, 104);
+            label3.Location = new Point(535, 104);
             label3.Name = "label3";
             label3.Size = new Size(184, 30);
             label3.TabIndex = 5;
@@ -117,7 +118,7 @@
             label4.BorderStyle = BorderStyle.FixedSingle;
             label4.Location = new Point(0, 102);
             label4.Name = "label4";
-            label4.Size = new Size(1184, 2);
+            label4.Size = new Size(1264, 2);
             label4.TabIndex = 9;
             // 
             // groupBox1
@@ -173,7 +174,7 @@
             groupBox2.Font = new Font("Segoe UI", 12F);
             groupBox2.Location = new Point(346, 9);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(826, 88);
+            groupBox2.Size = new Size(906, 88);
             groupBox2.TabIndex = 11;
             groupBox2.TabStop = false;
             groupBox2.Text = "Stav";
@@ -181,11 +182,11 @@
             // listView1
             // 
             listView1.Columns.AddRange(new ColumnHeader[] { counter, time, value });
-            listView1.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            listView1.Font = new Font("Segoe UI", 13.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
             listView1.GridLines = true;
-            listView1.Location = new Point(749, 137);
+            listView1.Location = new Point(826, 137);
             listView1.Name = "listView1";
-            listView1.Size = new Size(423, 436);
+            listView1.Size = new Size(420, 344);
             listView1.TabIndex = 12;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -209,7 +210,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label2.Location = new Point(863, 104);
+            label2.Location = new Point(940, 104);
             label2.Name = "label2";
             label2.Size = new Size(173, 30);
             label2.TabIndex = 13;
@@ -225,7 +226,7 @@
             label5.Anchor = AnchorStyles.Bottom;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(293, 636);
+            label5.Location = new Point(291, 686);
             label5.Name = "label5";
             label5.Size = new Size(125, 21);
             label5.TabIndex = 14;
@@ -235,28 +236,11 @@
             // 
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             pictureBox1.ImageLocation = "C:\\Users\\rober\\source\\repos\\FiresWinForms\\FiresWinForms\\images\\fires-logo-white.png";
-            pictureBox1.Location = new Point(0, 533);
+            pictureBox1.Location = new Point(0, 583);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(297, 170);
             pictureBox1.TabIndex = 15;
             pictureBox1.TabStop = false;
-            // 
-            // showGraphBtn
-            // 
-            showGraphBtn.BackColor = SystemColors.ButtonFace;
-            showGraphBtn.Enabled = false;
-            showGraphBtn.FlatAppearance.MouseOverBackColor = SystemColors.ScrollBar;
-            showGraphBtn.FlatStyle = FlatStyle.Flat;
-            showGraphBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
-            showGraphBtn.ForeColor = SystemColors.ControlText;
-            showGraphBtn.Image = Properties.Resources.loading;
-            showGraphBtn.Location = new Point(952, 587);
-            showGraphBtn.Name = "showGraphBtn";
-            showGraphBtn.Size = new Size(220, 52);
-            showGraphBtn.TabIndex = 16;
-            showGraphBtn.Text = "ZOBRAZIŤ GRAF";
-            showGraphBtn.UseVisualStyleBackColor = false;
-            showGraphBtn.Click += showGraph_Click;
             // 
             // startBtn
             // 
@@ -277,7 +261,7 @@
             // maxValue
             // 
             maxValue.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            maxValue.Location = new Point(495, 395);
+            maxValue.Location = new Point(535, 398);
             maxValue.Name = "maxValue";
             maxValue.ReadOnly = true;
             maxValue.Size = new Size(199, 43);
@@ -303,7 +287,7 @@
             // numberMeasure
             // 
             numberMeasure.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            numberMeasure.Location = new Point(495, 313);
+            numberMeasure.Location = new Point(535, 313);
             numberMeasure.Name = "numberMeasure";
             numberMeasure.ReadOnly = true;
             numberMeasure.Size = new Size(199, 43);
@@ -314,7 +298,7 @@
             // 
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label7.Location = new Point(521, 362);
+            label7.Location = new Point(561, 365);
             label7.Name = "label7";
             label7.Size = new Size(137, 30);
             label7.TabIndex = 27;
@@ -324,7 +308,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label6.Location = new Point(513, 281);
+            label6.Location = new Point(553, 281);
             label6.Name = "label6";
             label6.Size = new Size(150, 30);
             label6.TabIndex = 24;
@@ -344,7 +328,7 @@
             Nastavenie.Controls.Add(silaFd);
             Nastavenie.Controls.Add(label10);
             Nastavenie.Font = new Font("Segoe UI", 12F);
-            Nastavenie.Location = new Point(12, 204);
+            Nastavenie.Location = new Point(12, 244);
             Nastavenie.Name = "Nastavenie";
             Nastavenie.Size = new Size(431, 299);
             Nastavenie.TabIndex = 28;
@@ -366,7 +350,7 @@
             // 
             silaFmin.Enabled = false;
             silaFmin.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            silaFmin.Location = new Point(6, 68);
+            silaFmin.Location = new Point(6, 240);
             silaFmin.Name = "silaFmin";
             silaFmin.Size = new Size(200, 43);
             silaFmin.TabIndex = 33;
@@ -377,7 +361,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label12.Location = new Point(30, 35);
+            label12.Location = new Point(30, 207);
             label12.Name = "label12";
             label12.Size = new Size(144, 30);
             label12.TabIndex = 34;
@@ -387,7 +371,7 @@
             // 
             silaFs.Enabled = false;
             silaFs.Font = new Font("Segoe UI Semibold", 19.8000011F, FontStyle.Bold);
-            silaFs.Location = new Point(6, 244);
+            silaFs.Location = new Point(6, 68);
             silaFs.Name = "silaFs";
             silaFs.Size = new Size(200, 43);
             silaFs.TabIndex = 31;
@@ -419,7 +403,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold);
-            label11.Location = new Point(45, 211);
+            label11.Location = new Point(45, 35);
             label11.Name = "label11";
             label11.Size = new Size(115, 30);
             label11.TabIndex = 32;
@@ -466,6 +450,17 @@
             label10.Size = new Size(119, 30);
             label10.TabIndex = 30;
             label10.Text = "Sila Fd (N)";
+            // 
+            // showLimitsCheckbox
+            // 
+            showLimitsCheckbox.AutoSize = true;
+            showLimitsCheckbox.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            showLimitsCheckbox.Location = new Point(501, 651);
+            showLimitsCheckbox.Name = "showLimitsCheckbox";
+            showLimitsCheckbox.Size = new Size(261, 34);
+            showLimitsCheckbox.TabIndex = 35;
+            showLimitsCheckbox.Text = "Vykresliť limity na grafe";
+            showLimitsCheckbox.UseVisualStyleBackColor = true;
             // 
             // conditionFdmax
             // 
@@ -514,7 +509,7 @@
             zeroBtn.FlatStyle = FlatStyle.Flat;
             zeroBtn.Font = new Font("Segoe UI Semibold", 16.2F, FontStyle.Bold);
             zeroBtn.ForeColor = SystemColors.ControlText;
-            zeroBtn.Location = new Point(495, 216);
+            zeroBtn.Location = new Point(535, 213);
             zeroBtn.Name = "zeroBtn";
             zeroBtn.Size = new Size(199, 52);
             zeroBtn.TabIndex = 32;
@@ -527,7 +522,7 @@
             groupBox3.Controls.Add(startBtn);
             groupBox3.Controls.Add(repeatBtn);
             groupBox3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            groupBox3.Location = new Point(12, 104);
+            groupBox3.Location = new Point(12, 107);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(431, 101);
             groupBox3.TabIndex = 33;
@@ -540,31 +535,37 @@
             groupBox4.Controls.Add(conditionFs);
             groupBox4.Controls.Add(conditionFmin);
             groupBox4.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            groupBox4.Location = new Point(454, 444);
+            groupBox4.Location = new Point(490, 451);
             groupBox4.Name = "groupBox4";
             groupBox4.Size = new Size(285, 184);
             groupBox4.TabIndex = 34;
             groupBox4.TabStop = false;
             groupBox4.Text = "Podmienky";
             // 
-            // showLimitsCheckbox
+            // graphPicture
             // 
-            showLimitsCheckbox.AutoSize = true;
-            showLimitsCheckbox.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            showLimitsCheckbox.Location = new Point(754, 597);
-            showLimitsCheckbox.Name = "showLimitsCheckbox";
-            showLimitsCheckbox.Size = new Size(175, 34);
-            showLimitsCheckbox.TabIndex = 35;
-            showLimitsCheckbox.Text = "Vykresliť limity";
-            showLimitsCheckbox.UseVisualStyleBackColor = true;
+            graphPicture.BackColor = SystemColors.Window;
+            graphPicture.BorderStyle = BorderStyle.FixedSingle;
+            graphPicture.Cursor = Cursors.Hand;
+            graphPicture.Enabled = false;
+            graphPicture.ImageLocation = "";
+            graphPicture.Location = new Point(826, 489);
+            graphPicture.Name = "graphPicture";
+            graphPicture.Size = new Size(420, 210);
+            graphPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            graphPicture.TabIndex = 35;
+            graphPicture.TabStop = false;
+            graphPicture.UseWaitCursor = true;
+            graphPicture.Click += graphPicture_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.DarkSeaGreen;
-            ClientSize = new Size(1184, 661);
+            ClientSize = new Size(1264, 711);
             Controls.Add(showLimitsCheckbox);
+            Controls.Add(graphPicture);
             Controls.Add(label5);
             Controls.Add(groupBox4);
             Controls.Add(groupBox3);
@@ -576,7 +577,6 @@
             Controls.Add(label6);
             Controls.Add(actualData);
             Controls.Add(label3);
-            Controls.Add(showGraphBtn);
             Controls.Add(pictureBox1);
             Controls.Add(label2);
             Controls.Add(listView1);
@@ -597,6 +597,7 @@
             groupBox3.ResumeLayout(false);
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)graphPicture).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -619,7 +620,6 @@
         private ColumnHeader counter;
         private Label label5;
         private PictureBox pictureBox1;
-        private Button showGraphBtn;
         private Button startBtn;
         private TextBox maxValue;
         private Button repeatBtn;
@@ -645,5 +645,6 @@
         private GroupBox groupBox3;
         private GroupBox groupBox4;
         private CheckBox showLimitsCheckbox;
+        private PictureBox graphPicture;
     }
 }
