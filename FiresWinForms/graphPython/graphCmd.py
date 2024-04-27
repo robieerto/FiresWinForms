@@ -1,11 +1,11 @@
-import matplotlib
-import numpy as np
+# import matplotlib
+# import numpy as np
 import matplotlib.pyplot as plt
 # from scipy.interpolate import make_interp_spline, BSpline
 from matplotlib.ticker import MaxNLocator
-from matplotlib.ticker import FuncFormatter
+# from matplotlib.ticker import FuncFormatter
 from pandas import read_excel
-from os import path, makedirs
+from os import makedirs
 import sys
 import locale
 
@@ -16,10 +16,15 @@ valueHeader = 'Sila (N)'
 
 graph_path = "./Data/Grafy/"
 
-def form1(y, pos):
-    """ This function returns a string with 3 decimal places, given the input x"""
-    return '%.1f' % y
+# def form1(y, pos):
+#     """ This function returns a string with 3 decimal places, given the input x"""
+#     return '%.1f' % y
 
+# Deserialize string with numbers separated by ~ to array
+def deserialize(serializedstr):
+    return [float(x) for x in serializedstr.split('~')]
+
+# Read and process data
 data = read_excel(sys.argv[1], 'Meranie '+sys.argv[2], engine='openpyxl')
 # Replace commas with dots
 data = data.replace(',', '.', regex=True)
@@ -49,11 +54,18 @@ plt.gca().set_xlim(0)
 # plt.gca().set_ylim(bottom, top)
 plt.grid(linestyle=':', linewidth=1)
 plt.gcf().set_size_inches(12, 6)
-makedirs(graph_path, exist_ok=True)
 plt.subplots_adjust(left=0.055, bottom=0.085, right=0.945, top=0.945, wspace=0, hspace=0)
 
-# plt.savefig(graph_path + '%s.png' % path.splitext(path.basename(sys.argv[1]))[0])
+# Horizontal lines
+if (len(sys.argv) > 4):
+    deserializeArr = deserialize(sys.argv[4])
+    for value in deserializeArr:
+        plt.axhline(y = value, color = 'r', linestyle = ':')
+
+# Save or show graph
 if (len(sys.argv) > 3):
-    plt.savefig(graph_path + '%s.png' % sys.argv[2])
-else:
-    plt.show()
+    if (sys.argv[3] == 'save'):
+        makedirs(graph_path, exist_ok=True)
+        plt.savefig(graph_path + '%s.png' % sys.argv[2])
+    elif (sys.argv[3] == 'show'):   
+        plt.show()

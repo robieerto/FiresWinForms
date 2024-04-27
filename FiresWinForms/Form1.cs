@@ -8,12 +8,13 @@ namespace FiresWinForms
         private SerialControl? _serialControl;
         private List<DataModel> Data { get; set; } = [];
         private DateTime timerEnd;
+        private Image? loadingImg;
         private int measurementNum, counterEnd;
         private bool isWaiting;
         private bool isMeasuring;
         private bool changingSettings;
         private decimal rawValue, savedValue;
-        private decimal Fmin, Fd, Fs, Td, Tt;
+        private decimal Fmin, Fd, Fs, Td;
 
         [GeneratedRegex(@"-?\d+")]
         private static partial Regex NumberRegex();
@@ -23,8 +24,14 @@ namespace FiresWinForms
         public Form1()
         {
             InitializeComponent();
-            comboBoxPort.Items.AddRange(ports);
             logger.Text = "Vyberte COM port a pripojte sa";
+            comboBoxPort.Items.AddRange(ports);
+            if (ports.Length > 0)
+            {
+                comboBoxPort.SelectedItem = ports[0];
+            }
+            loadingImg = showGraphBtn.Image;
+            showGraphBtn.Image = null;
             AsssignSettings();
         }
 
@@ -59,9 +66,9 @@ namespace FiresWinForms
                     });
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                logger.Text = ex.Message;
+                logger.Text = "Chyba zo zariadenia";
             }
         }
 
@@ -70,13 +77,42 @@ namespace FiresWinForms
             return (timer1.Interval - (int)(timerEnd - DateTime.Now).TotalMilliseconds) / 1000.0m;
         }
 
+        private string serializedValues()
+        {
+            if (showLimitsCheckbox.Checked)
+            {
+                return $"{Fmin}~{Fs}~{Fd}";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         private void AsssignSettings()
         {
-            Fmin = decimal.Parse(silaFmin.Text);
-            Fd = decimal.Parse(silaFd.Text);
-            Fs = decimal.Parse(silaFs.Text);
-            Td = decimal.Parse(casTd.Text);
-            Tt = decimal.Parse(casTt.Text);
+            try
+            {
+                Fmin = decimal.Parse(silaFmin.Text);
+                Fd = decimal.Parse(silaFd.Text);
+                Fs = decimal.Parse(silaFs.Text);
+                Td = decimal.Parse(casTd.Text);
+                timer1.Interval = (int)(decimal.Parse(casTt.Text) * 1000);
+                connectBtn.Enabled = true;
+                if (_serialControl != null)
+                {
+                    startBtn.Enabled = true;
+                    zeroBtn.Enabled = true;
+                }
+                logger.Text = "Nastavenia uložené";
+            }
+            catch (Exception)
+            {
+                logger.Text = "Nesprávny formát nastavení";
+                connectBtn.Enabled = false;
+                startBtn.Enabled = false;
+                repeatBtn.Enabled = false;
+            }
         }
 
         private void connect_Click(object sender, EventArgs e)
@@ -92,22 +128,16 @@ namespace FiresWinForms
             {
                 return;
             }
-            logger.Text = "Pripojené na " + selectedItem;
+            logger.Text = "Zariadenie pripojené";
             startBtn.Enabled = true;
             zeroBtn.Enabled = true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // FOR TESTING
-            _serialControl = new SerialControl("COM5", this, actualData, logger);
-            startBtn.Enabled = true;
-            zeroBtn.Enabled = true;
-            // END FOR TESTING
-
             Task.Run(async () =>
             {
-                while (_serialControl.IsConnected == false)
+                while (_serialControl?.IsConnected == false)
                 {
                     try
                     {
@@ -141,7 +171,7 @@ namespace FiresWinForms
             listView1.Items.Clear();
             counterEnd = 0;
             Data = [];
-            logger.Text = "Čaká na F > Fmin";
+            logger.Text = "Čaká na silu F > Fmin";
             startBtn.Text = "PRERUŠIŤ";
             isWaiting = true;
             disableButtons();
@@ -214,7 +244,7 @@ namespace FiresWinForms
                     try
                     {
                         XlsSaver.SaveData(Data, measurementNum);
-                        RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, true);
+                        RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues(), true);
                     }
                     catch (Exception ex)
                     {
@@ -271,7 +301,7 @@ namespace FiresWinForms
         {
             Task.Run(() =>
             {
-                RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum);
+                RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues());
             });
         }
 
@@ -297,7 +327,7 @@ namespace FiresWinForms
         {
             showGraphBtn.Enabled = false;
             showGraphBtn.Text = "";
-            showGraphBtn.Image = Image.FromFile("images\\loading.gif");
+            showGraphBtn.Image = loadingImg;
         }
 
         private void showGraph_Loaded()
