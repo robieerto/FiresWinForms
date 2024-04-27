@@ -14,8 +14,6 @@ locale.setlocale(locale.LC_NUMERIC, 'sk_SK.UTF-8')
 timeHeader = 'Čas (s)'
 valueHeader = 'Sila (N)'
 
-graph_path = "./Data/Grafy/"
-
 # def form1(y, pos):
 #     """ This function returns a string with 3 decimal places, given the input x"""
 #     return '%.1f' % y
@@ -23,6 +21,13 @@ graph_path = "./Data/Grafy/"
 # Deserialize string with numbers separated by ~ to array
 def deserialize(serializedstr):
     return [float(x) for x in serializedstr.split('~')]
+
+# Check if path contains path delimiters
+if '\\' in sys.argv[1]:
+    # Split file path by path delimiters and get pthe folder path
+    graph_path = sys.argv[1].rsplit('\\', 1)[0] + '\\Grafy\\'
+else:
+    graph_path = '.\\Data\\Grafy\\'
 
 # Read and process data
 data = read_excel(sys.argv[1], 'Meranie '+sys.argv[2], engine='openpyxl')

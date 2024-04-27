@@ -7,6 +7,7 @@ namespace FiresWinForms
     {
         private SerialControl? _serialControl;
         private List<DataModel> Data { get; set; } = [];
+        private String dataPath;
         private DateTime timerEnd;
         private Image? loadingImg;
         private int measurementNum, counterEnd;
@@ -16,8 +17,11 @@ namespace FiresWinForms
         private decimal rawValue, savedValue;
         private decimal Fmin, Fd, Fs, Td;
 
+        private static readonly string filename = "data.xlsx";
+
         [GeneratedRegex(@"-?\d+")]
         private static partial Regex NumberRegex();
+
 
         public string[] ports = SerialPort.GetPortNames();
 
@@ -55,6 +59,7 @@ namespace FiresWinForms
                     {
                         StopMeasuring();
                         ProcessData();
+                        SaveData();
                     }
 
                     Data.Add(new DataModel
@@ -170,7 +175,7 @@ namespace FiresWinForms
             counterEnd = 0;
             Data = [];
             logger.Text = "Čaká na silu F > Fmin";
-            startBtn.Text = "PRERUŠIŤ";
+            startBtn.Text = "ZRUŠIŤ";
             isWaiting = true;
             disableButtons();
             graphPicture.Image = null;
@@ -224,28 +229,32 @@ namespace FiresWinForms
             // Find last value after Td
             var lastAfterTd = Data.Where(x => x.Time >= Td).FirstOrDefault()?.Value;
             conditionFs.BackColor = lastAfterTd > Fs ? Color.Red : Color.Green;
+        }
 
-            // Save data to file and show graphy
+        private void SaveData()
+        {
+            if (XlsSaver.fileCreated == false)
+            {
+                dataPath = $"Data\\{DateTime.Now.ToString("dd-MM-yyyy")}__";
+                var i = 1;
+                while (Directory.Exists(dataPath + i))
+                {
+                    i++;
+                }
+                dataPath += i;
+                Directory.CreateDirectory(dataPath);
+                XlsSaver.dataPath = $"{dataPath}\\{filename}";
+            }
+
             try
             {
                 Task.Run(() =>
                 {
                     int measurementNum = this.measurementNum;
-                    if (XlsSaver.fileCreated == false)
-                    {
-                        try
-                        {
-                            var dir = new DirectoryInfo("Data\\Grafy");
-                            dir.Delete(true);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
                     try
                     {
                         XlsSaver.SaveData(Data, measurementNum);
-                        RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues(), true);
+                        RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues(), true);
                     }
                     catch (Exception ex)
                     {
@@ -255,7 +264,7 @@ namespace FiresWinForms
                     {
                         Invoke(new MethodInvoker(delegate ()
                         {
-                            graphPicture.Image = Image.FromFile("Data\\Grafy\\" + measurementNum + ".png");
+                            graphPicture.Image = Image.FromFile($"{dataPath}\\Grafy\\" + measurementNum + ".png");
                             graphPicture.Enabled = true;
                             graphPicture.UseWaitCursor = false;
                         }));
@@ -294,6 +303,7 @@ namespace FiresWinForms
         {
             StopMeasuring();
             ProcessData();
+            SaveData();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -345,7 +355,7 @@ namespace FiresWinForms
         {
             Task.Run(() =>
             {
-                RunCmd.Run("graphCmd\\graphCmd.exe", "Data\\data.xlsx ", measurementNum, serializedValues());
+                RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues());
             });
         }
     }
