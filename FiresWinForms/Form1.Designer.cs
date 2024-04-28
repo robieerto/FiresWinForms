@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             logger = new TextBox();
             actualData = new TextBox();
             label3 = new Label();
@@ -72,6 +73,7 @@
             groupBox3 = new GroupBox();
             groupBox4 = new GroupBox();
             graphPicture = new PictureBox();
+            loadingBox = new PictureBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -79,6 +81,7 @@
             groupBox3.SuspendLayout();
             groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)graphPicture).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)loadingBox).BeginInit();
             SuspendLayout();
             // 
             // logger
@@ -138,7 +141,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(16, 21);
+            label1.Location = new Point(16, 19);
             label1.Name = "label1";
             label1.Size = new Size(101, 25);
             label1.TabIndex = 1;
@@ -235,8 +238,9 @@
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            pictureBox1.ImageLocation = "C:\\Users\\rober\\source\\repos\\FiresWinForms\\FiresWinForms\\images\\fires-logo-white.png";
-            pictureBox1.Location = new Point(0, 583);
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.ImageLocation = "";
+            pictureBox1.Location = new Point(0, 545);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(297, 170);
             pictureBox1.TabIndex = 15;
@@ -328,7 +332,7 @@
             Nastavenie.Controls.Add(silaFd);
             Nastavenie.Controls.Add(label10);
             Nastavenie.Font = new Font("Segoe UI", 12F);
-            Nastavenie.Location = new Point(12, 244);
+            Nastavenie.Location = new Point(12, 246);
             Nastavenie.Name = "Nastavenie";
             Nastavenie.Size = new Size(431, 299);
             Nastavenie.TabIndex = 28;
@@ -461,6 +465,7 @@
             showLimitsCheckbox.TabIndex = 35;
             showLimitsCheckbox.Text = "Vykresliť limity na grafe";
             showLimitsCheckbox.UseVisualStyleBackColor = true;
+            showLimitsCheckbox.CheckedChanged += showLimitsCheckbox_CheckedChanged;
             // 
             // conditionFdmax
             // 
@@ -555,15 +560,28 @@
             graphPicture.SizeMode = PictureBoxSizeMode.StretchImage;
             graphPicture.TabIndex = 35;
             graphPicture.TabStop = false;
-            graphPicture.UseWaitCursor = true;
             graphPicture.Click += graphPicture_Click;
+            // 
+            // loadingBox
+            // 
+            loadingBox.BackColor = SystemColors.Window;
+            loadingBox.BackgroundImageLayout = ImageLayout.Stretch;
+            loadingBox.Image = (Image)resources.GetObject("loadingBox.Image");
+            loadingBox.Location = new Point(1013, 570);
+            loadingBox.Name = "loadingBox";
+            loadingBox.Size = new Size(50, 50);
+            loadingBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            loadingBox.TabIndex = 36;
+            loadingBox.TabStop = false;
+            loadingBox.Visible = false;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.DarkSeaGreen;
+            AutoScaleDimensions = new SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            BackColor = Color.MediumSeaGreen;
             ClientSize = new Size(1264, 711);
+            Controls.Add(loadingBox);
             Controls.Add(showLimitsCheckbox);
             Controls.Add(graphPicture);
             Controls.Add(label5);
@@ -598,6 +616,7 @@
             groupBox4.ResumeLayout(false);
             groupBox4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)graphPicture).EndInit();
+            ((System.ComponentModel.ISupportInitialize)loadingBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -646,5 +665,6 @@
         private GroupBox groupBox4;
         private CheckBox showLimitsCheckbox;
         private PictureBox graphPicture;
+        private PictureBox loadingBox;
     }
 }

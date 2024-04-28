@@ -12,9 +12,11 @@ namespace FiresWinForms
             var workbook = fileCreated ? new XLWorkbook(dataPath) : new XLWorkbook();
             var worksheetName = "Meranie " + measurement;
             bool worksheetExists = workbook.Worksheets.Contains(worksheetName);
-            var worksheet = (!worksheetExists)
-                ? workbook.Worksheets.Add(worksheetName)
-                : workbook.Worksheet(worksheetName);
+            if (worksheetExists)
+            {
+                workbook.Worksheet(worksheetName).Delete();
+            }
+            var worksheet = workbook.Worksheets.Add(worksheetName);
 
             worksheet.Cell("A1").Value = "Čas (s)";
             worksheet.Cell("B1").Value = "Sila (N)";

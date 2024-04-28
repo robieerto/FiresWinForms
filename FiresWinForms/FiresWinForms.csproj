@@ -8,12 +8,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <ForceDesignerDpiUnaware>true</ForceDesignerDpiUnaware>
-    <ApplicationIcon>images\force.ico</ApplicationIcon>
+    <ApplicationIcon>img\force.ico</ApplicationIcon>
     <AssemblyName>FiresMeranie</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="images\force.ico" />
+    <Content Include="img\force.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +34,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="images\" />
   </ItemGroup>
 
 </Project>

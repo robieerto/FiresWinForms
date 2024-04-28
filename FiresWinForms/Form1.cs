@@ -7,9 +7,8 @@ namespace FiresWinForms
     {
         private SerialControl? _serialControl;
         private List<DataModel> Data { get; set; } = [];
-        private String dataPath;
+        private String dataPath = "";
         private DateTime timerEnd;
-        private Image? loadingImg;
         private int measurementNum, counterEnd;
         private bool isWaiting;
         private bool isMeasuring;
@@ -60,6 +59,7 @@ namespace FiresWinForms
                         StopMeasuring();
                         ProcessData();
                         SaveData();
+                        return;
                     }
 
                     Data.Add(new DataModel
@@ -140,7 +140,7 @@ namespace FiresWinForms
         {
             Task.Run(async () =>
             {
-                while (_serialControl?.IsConnected == false)
+                while (!(_serialControl?.IsConnected ?? false))
                 {
                     try
                     {
@@ -178,9 +178,9 @@ namespace FiresWinForms
             startBtn.Text = "ZRUŠIŤ";
             isWaiting = true;
             disableButtons();
+            graphPicture.Image?.Dispose();
             graphPicture.Image = null;
             graphPicture.Enabled = false;
-            graphPicture.UseWaitCursor = true;
             numberMeasure.Text = measurementNum.ToString();
         }
 
@@ -200,6 +200,7 @@ namespace FiresWinForms
             logger.Text = "Meranie ukončené";
             startBtn.Text = "SPUSTIŤ";
             enableButtons();
+            loadingBox.Visible = true;
         }
 
         private void ProcessData()
@@ -250,23 +251,32 @@ namespace FiresWinForms
             {
                 Task.Run(() =>
                 {
+                    var data = new List<DataModel>(Data);
                     int measurementNum = this.measurementNum;
                     try
                     {
-                        XlsSaver.SaveData(Data, measurementNum);
+                        XlsSaver.SaveData(data, measurementNum);
+                        Invoke(new MethodInvoker(delegate ()
+                        {
+                            graphPicture.Image?.Dispose();
+                        }));
                         RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues(), true);
                     }
                     catch (Exception ex)
                     {
-                        logger.Text = ex.Message;
+                        Invoke(new MethodInvoker(delegate ()
+                        {
+                            logger.Text = ex.Message;
+
+                        }));
                     }
                     try
                     {
                         Invoke(new MethodInvoker(delegate ()
                         {
+                            loadingBox.Visible = false;
                             graphPicture.Image = Image.FromFile($"{dataPath}\\Grafy\\" + measurementNum + ".png");
                             graphPicture.Enabled = true;
-                            graphPicture.UseWaitCursor = false;
                         }));
                     }
                     catch (Exception)
@@ -315,9 +325,12 @@ namespace FiresWinForms
             conditionFdmax.BackColor = Color.White;
             conditionFmin.BackColor = Color.White;
             conditionFs.BackColor = Color.White;
-            connectBtn.Enabled = false;
+
             repeatBtn.Enabled = false;
+            connectBtn.Enabled = false;
             zeroBtn.Enabled = false;
+
+            ActiveControl = null;
         }
 
         private void enableButtons()
@@ -356,6 +369,35 @@ namespace FiresWinForms
             Task.Run(() =>
             {
                 RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues());
+            });
+        }
+
+        private void showLimitsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            loadingBox.Visible = true;
+            graphPicture.Image?.Dispose();
+            graphPicture.Image = null;
+            graphPicture.Enabled = false;
+
+            Task.Run(() =>
+            {
+                try
+                {
+                    RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues(), true);
+                    Invoke(new MethodInvoker(delegate ()
+                    {
+                        loadingBox.Visible = false;
+                        graphPicture.Image = Image.FromFile($"{dataPath}\\Grafy\\" + measurementNum + ".png");
+                        graphPicture.Enabled = true;
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    Invoke(new MethodInvoker(delegate ()
+                    {
+                        logger.Text = ex.Message;
+                    }));
+                }
             });
         }
     }
