@@ -221,7 +221,7 @@
             // 
             // timer1
             // 
-            timer1.Interval = 5000;
+            timer1.Interval = 6000;
             timer1.Tick += timer1_Tick;
             // 
             // label5
@@ -458,6 +458,8 @@
             // showLimitsCheckbox
             // 
             showLimitsCheckbox.AutoSize = true;
+            showLimitsCheckbox.Checked = true;
+            showLimitsCheckbox.CheckState = CheckState.Checked;
             showLimitsCheckbox.Font = new Font("Segoe UI", 16.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             showLimitsCheckbox.Location = new Point(501, 651);
             showLimitsCheckbox.Name = "showLimitsCheckbox";

@@ -14,13 +14,12 @@ namespace FiresWinForms
         private bool isMeasuring;
         private bool changingSettings;
         private decimal rawValue, savedValue;
-        private decimal Fmin, Fd, Fs, Td;
+        private decimal Fmin, Fd, Fs, Td, Tt;
 
         private static readonly string filename = "data.xlsx";
 
         [GeneratedRegex(@"-?\d+")]
         private static partial Regex NumberRegex();
-
 
         public string[] ports = SerialPort.GetPortNames();
 
@@ -50,17 +49,17 @@ namespace FiresWinForms
                 }
                 if (isMeasuring)
                 {
-                    if (value < Fmin)
-                    {
-                        counterEnd++;
-                    }
-                    if (counterEnd > 10)
-                    {
-                        StopMeasuring();
-                        ProcessData();
-                        SaveData();
-                        return;
-                    }
+                    //if (value < Fmin)
+                    //{
+                    //    counterEnd++;
+                    //}
+                    //if (counterEnd > 10)
+                    //{
+                    //    StopMeasuring();
+                    //    ProcessData();
+                    //    SaveData();
+                    //    return;
+                    //}
 
                     Data.Add(new DataModel
                     {
@@ -80,11 +79,23 @@ namespace FiresWinForms
             return (timer1.Interval - (int)(timerEnd - DateTime.Now).TotalMilliseconds) / 1000.0m;
         }
 
-        private string serializedValues()
+        private string horizontalValuesStr()
         {
             if (showLimitsCheckbox.Checked)
             {
-                return $"{Fmin}~{Fs}~{Fd}";
+                return $"{Fmin}~{Fs}~{Fd}".Replace(',', '.');
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        private string verticalValuesStr()
+        {
+            if (showLimitsCheckbox.Checked)
+            {
+                return $"{Td}~{Tt}".Replace(',', '.');
             }
             else
             {
@@ -100,7 +111,8 @@ namespace FiresWinForms
                 Fd = decimal.Parse(silaFd.Text);
                 Fs = decimal.Parse(silaFs.Text);
                 Td = decimal.Parse(casTd.Text);
-                timer1.Interval = (int)(decimal.Parse(casTt.Text) * 1000);
+                Tt = decimal.Parse(casTt.Text);
+                timer1.Interval = (int)(decimal.Parse(casTt.Text) * 1000) + 1000;
                 connectBtn.Enabled = true;
                 if (_serialControl != null)
                 {
@@ -260,7 +272,7 @@ namespace FiresWinForms
                         {
                             graphPicture.Image?.Dispose();
                         }));
-                        RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues(), true);
+                        RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, horizontalValuesStr(), verticalValuesStr(), true);
                     }
                     catch (Exception ex)
                     {
@@ -368,37 +380,40 @@ namespace FiresWinForms
         {
             Task.Run(() =>
             {
-                RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues());
+                RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, horizontalValuesStr(), verticalValuesStr());
             });
         }
 
         private void showLimitsCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            loadingBox.Visible = true;
-            graphPicture.Image?.Dispose();
-            graphPicture.Image = null;
-            graphPicture.Enabled = false;
-
-            Task.Run(() =>
+            if (XlsSaver.fileCreated)
             {
-                try
+                loadingBox.Visible = true;
+                graphPicture.Image?.Dispose();
+                graphPicture.Image = null;
+                graphPicture.Enabled = false;
+
+                Task.Run(() =>
                 {
-                    RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, serializedValues(), true);
-                    Invoke(new MethodInvoker(delegate ()
+                    try
                     {
-                        loadingBox.Visible = false;
-                        graphPicture.Image = Image.FromFile($"{dataPath}\\Grafy\\" + measurementNum + ".png");
-                        graphPicture.Enabled = true;
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    Invoke(new MethodInvoker(delegate ()
+                        RunCmd.Run("graphCmd\\graphCmd.exe", $"{dataPath}\\{filename}", measurementNum, horizontalValuesStr(), verticalValuesStr(), true);
+                        Invoke(new MethodInvoker(delegate ()
+                        {
+                            loadingBox.Visible = false;
+                            graphPicture.Image = Image.FromFile($"{dataPath}\\Grafy\\" + measurementNum + ".png");
+                            graphPicture.Enabled = true;
+                        }));
+                    }
+                    catch (Exception ex)
                     {
-                        logger.Text = ex.Message;
-                    }));
-                }
-            });
+                        Invoke(new MethodInvoker(delegate ()
+                        {
+                            logger.Text = ex.Message;
+                        }));
+                    }
+                });
+            }
         }
     }
 }

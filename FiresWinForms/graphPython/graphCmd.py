@@ -67,6 +67,12 @@ if (len(sys.argv) > 4):
     for value in deserializeArr:
         plt.axhline(y = value, color = 'r', linestyle = ':')
 
+# Vertical lines
+if (len(sys.argv) > 5):
+    deserializeArr = deserialize(sys.argv[5])
+    for value in deserializeArr:
+        plt.axvline(x = value, color = 'g', linestyle = ':')
+
 # Save or show graph
 if (len(sys.argv) > 3):
     if (sys.argv[3] == 'save'):
