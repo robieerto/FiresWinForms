@@ -29,11 +29,31 @@ namespace FiresWinForms
                 _serialPort = new SerialPort(comPort, 115200, Parity.None, 8, StopBits.One);
 
                 _serialPort.Open();
-                _serialPort.DataReceived += SerialPort_DataReceived;
+                //_serialPort.DataReceived += SerialPort_DataReceived;
                 _serialPort.PinChanged += SerialPort_PinChanged;
                 _serialPort.ErrorReceived += SerialPort_ErrorReceived;
 
                 IsConnected = true;
+
+                Task.Run(async () =>
+                {
+                    while (true)
+                    {
+                        if (IsConnected)
+                        {
+                            string? line = _serialPort?.ReadLine();
+                            if (line != null && line.Length > 0)
+                            {
+                                Invoke(() =>
+                                {
+                                    _form.AddDataValue(line);
+                                });
+                            }
+                            _serialPort?.DiscardInBuffer();
+                        }
+                        await Task.Delay(50);
+                    }
+                });
 
                 Task.Run(async () =>
                 {

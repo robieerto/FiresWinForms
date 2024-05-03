@@ -308,6 +308,7 @@ namespace FiresWinForms
             {
                 isWaiting = false;
                 StopMeasuring();
+                loadingBox.Visible = false;
             }
             else
             {
